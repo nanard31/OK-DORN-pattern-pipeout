@@ -1,7 +1,7 @@
 ############################################################################
 # XEM7310 - Xilinx constraints file
 #
-# Pin mappings for the XEM7310.  Use this as a template and comment out
+# Pin mappings for the XEM7310.  Use this as a template and comment out 
 # the pins that are not used in your design.  (By default, map will fail
 # if this file contains constraints for signals not in your design).
 #
@@ -11,47 +11,6 @@
 set_property CFGBVS GND [current_design]
 set_property CONFIG_VOLTAGE 1.8 [current_design]
 set_property BITSTREAM.GENERAL.COMPRESS True [current_design]
-
-############################################################################
-## ADCs
-############################################################################
-
-#set_property PACKAGE_PIN AB5 [get_ports  {o_ADC_SCK_p[0]}]
-#set_property PACKAGE_PIN AA5 [get_ports {o_ADC_SCK_n[0]}]
-#set_property PACKAGE_PIN Y9  [get_ports  {o_ADC_CNV_n[0]}]
-#set_property PACKAGE_PIN AA1 [get_ports {i_ADC_SDO_p[0]}]
-#set_property PACKAGE_PIN AB1 [get_ports {i_ADC_SDO_n[0]}]
-#set_property PACKAGE_PIN R6 [get_ports {i_ADC_SDO_p[1]}]
-#set_property PACKAGE_PIN T6 [get_ports {i_ADC_SDO_n[1]}]
-
-#set_property PACKAGE_PIN AB2 [get_ports {o_ADC_SCK_p[2]}]
-#set_property PACKAGE_PIN AB3 [get_ports {o_ADC_SCK_n[2]}]
-#set_property PACKAGE_PIN U3  [get_ports {o_ADC_CNV_n[2]}]
-#set_property PACKAGE_PIN Y13 [get_ports {i_ADC_SDO_p[2]}]
-#set_property PACKAGE_PIN AA14 [get_ports {i_ADC_SDO_n[2]}]
-#set_property PACKAGE_PIN AB13 [get_ports {i_ADC_SDO_p[3]}]
-#set_property PACKAGE_PIN AA13 [get_ports {i_ADC_SDO_n[3]}]
-
-#set_property PACKAGE_PIN AA3 [get_ports {o_ADC_SCK_p[4]}]
-#set_property PACKAGE_PIN Y3 [get_ports {o_ADC_SCK_n[4]}]
-#set_property PACKAGE_PIN W9 [get_ports {o_ADC_CNV_n[4]}]
-#set_property PACKAGE_PIN W2 [get_ports {i_ADC_SDO_p[4]}]
-#set_property PACKAGE_PIN Y2 [get_ports {i_ADC_SDO_n[4]}]
-#set_property PACKAGE_PIN AB7 [get_ports {i_ADC_SDO_p[5]}]
-#set_property PACKAGE_PIN AB6 [get_ports {i_ADC_SDO_n[5]}]
-
-#set_property PACKAGE_PIN V4 [get_ports {o_ADC_SCK_p[6]}]
-#set_property PACKAGE_PIN W4 [get_ports {o_ADC_SCK_n[6]}]
-#set_property PACKAGE_PIN Y6 [get_ports {o_ADC_CNV_n[6]}]
-#set_property PACKAGE_PIN AB16 [get_ports {i_ADC_SDO_p[6]}]
-#set_property PACKAGE_PIN AB17 [get_ports {i_ADC_SDO_n[6]}]
-#set_property PACKAGE_PIN W16 [get_ports {i_ADC_SDO_p[7]}]
-#set_property PACKAGE_PIN W15 [get_ports {i_ADC_SDO_n[7]}]
-
-#set_property IOSTANDARD LVDS_25 [get_ports {o_ADC_SCK_p[*]}]
-#set_property IOSTANDARD LVDS_25 [get_ports {o_ADC_SCK_n[*]}]
-#set_property IOSTANDARD LVDS_25 [get_ports {i_ADC_SDO_p[*]}]
-#set_property IOSTANDARD LVDS_25 [get_ports {i_ADC_SDO_n[*]}]
 
 ############################################################################
 ## FrontPanel Host Interface
@@ -104,35 +63,35 @@ set_property PACKAGE_PIN AB18 [get_ports {okUHU[31]}]
 set_property SLEW FAST [get_ports {okUHU[*]}]
 set_property IOSTANDARD LVCMOS18 [get_ports {okUHU[*]}]
 
-set_property PACKAGE_PIN N13 [get_ports okAA]
-set_property IOSTANDARD LVCMOS18 [get_ports okAA]
+set_property PACKAGE_PIN N13 [get_ports {okAA}]
+set_property IOSTANDARD LVCMOS18 [get_ports {okAA}]
 
 
-create_clock -period 9.920 -name okUH0 [get_ports {okUH[0]}]
+create_clock -name okUH0 -period 9.920 [get_ports {okUH[0]}]
 
-set_input_delay -clock [get_clocks okUH0] -max -add_delay 8.000 [get_ports {okUH[*]}]
-set_input_delay -clock [get_clocks okUH0] -min -add_delay 10.000 [get_ports {okUH[*]}]
+set_input_delay -add_delay -max -clock [get_clocks {okUH0}]  8.000 [get_ports {okUH[*]}]
+set_input_delay -add_delay -min -clock [get_clocks {okUH0}] 10.000 [get_ports {okUH[*]}]
 set_multicycle_path -setup -from [get_ports {okUH[*]}] 2
 
-set_input_delay -clock [get_clocks okUH0] -max -add_delay 8.000 [get_ports {okUHU[*]}]
-set_input_delay -clock [get_clocks okUH0] -min -add_delay 2.000 [get_ports {okUHU[*]}]
+set_input_delay -add_delay -max -clock [get_clocks {okUH0}]  8.000 [get_ports {okUHU[*]}]
+set_input_delay -add_delay -min -clock [get_clocks {okUH0}]  2.000 [get_ports {okUHU[*]}]
 set_multicycle_path -setup -from [get_ports {okUHU[*]}] 2
 
-set_output_delay -clock [get_clocks okUH0] -max -add_delay 2.000 [get_ports {okHU[*]}]
-set_output_delay -clock [get_clocks okUH0] -min -add_delay -0.500 [get_ports {okHU[*]}]
+set_output_delay -add_delay -max -clock [get_clocks {okUH0}]  2.000 [get_ports {okHU[*]}]
+set_output_delay -add_delay -min -clock [get_clocks {okUH0}]  -0.500 [get_ports {okHU[*]}]
 
-set_output_delay -clock [get_clocks okUH0] -max -add_delay 2.000 [get_ports {okUHU[*]}]
-set_output_delay -clock [get_clocks okUH0] -min -add_delay -0.500 [get_ports {okUHU[*]}]
+set_output_delay -add_delay -max -clock [get_clocks {okUH0}]  2.000 [get_ports {okUHU[*]}]
+set_output_delay -add_delay -min -clock [get_clocks {okUH0}]  -0.500 [get_ports {okUHU[*]}]
 
 
 ############################################################################
 ## System Clock
 ############################################################################
-set_property IOSTANDARD LVDS_25 [get_ports sys_clk_p]
+set_property IOSTANDARD LVDS_25 [get_ports {sys_clk_p}]
+set_property PACKAGE_PIN W11 [get_ports {sys_clk_p}]
 
-set_property IOSTANDARD LVDS_25 [get_ports sys_clk_n]
-set_property PACKAGE_PIN W11 [get_ports sys_clk_p]
-set_property PACKAGE_PIN W12 [get_ports sys_clk_n]
+set_property IOSTANDARD LVDS_25 [get_ports {sys_clk_n}]
+set_property PACKAGE_PIN W12 [get_ports {sys_clk_n}]
 
 # LEDs #####################################################################
 set_property PACKAGE_PIN A13 [get_ports {led[0]}]
@@ -205,21 +164,21 @@ set_property PACKAGE_PIN H19 [get_ports {ddr3_ba[2]}]
 set_property SLEW FAST [get_ports {ddr3_ba[*]}]
 set_property IOSTANDARD SSTL15 [get_ports {ddr3_ba[*]}]
 
-set_property PACKAGE_PIN J16 [get_ports ddr3_ras_n]
-set_property SLEW FAST [get_ports ddr3_ras_n]
-set_property IOSTANDARD SSTL15 [get_ports ddr3_ras_n]
+set_property PACKAGE_PIN J16 [get_ports {ddr3_ras_n}]
+set_property SLEW FAST [get_ports {ddr3_ras_n}]
+set_property IOSTANDARD SSTL15 [get_ports {ddr3_ras_n}]
 
-set_property PACKAGE_PIN H17 [get_ports ddr3_cas_n]
-set_property SLEW FAST [get_ports ddr3_cas_n]
-set_property IOSTANDARD SSTL15 [get_ports ddr3_cas_n]
+set_property PACKAGE_PIN H17 [get_ports {ddr3_cas_n}]
+set_property SLEW FAST [get_ports {ddr3_cas_n}]
+set_property IOSTANDARD SSTL15 [get_ports {ddr3_cas_n}]
 
-set_property PACKAGE_PIN J20 [get_ports ddr3_we_n]
-set_property SLEW FAST [get_ports ddr3_we_n]
-set_property IOSTANDARD SSTL15 [get_ports ddr3_we_n]
+set_property PACKAGE_PIN J20 [get_ports {ddr3_we_n}]
+set_property SLEW FAST [get_ports {ddr3_we_n}]
+set_property IOSTANDARD SSTL15 [get_ports {ddr3_we_n}]
 
-set_property PACKAGE_PIN F21 [get_ports ddr3_reset_n]
-set_property SLEW FAST [get_ports ddr3_reset_n]
-set_property IOSTANDARD LVCMOS15 [get_ports ddr3_reset_n]
+set_property PACKAGE_PIN F21 [get_ports {ddr3_reset_n}]
+set_property SLEW FAST [get_ports {ddr3_reset_n}]
+set_property IOSTANDARD LVCMOS15 [get_ports {ddr3_reset_n}]
 
 set_property PACKAGE_PIN G18 [get_ports {ddr3_cke[0]}]
 set_property SLEW FAST [get_ports {ddr3_cke[*]}]
@@ -244,13 +203,12 @@ set_property PACKAGE_PIN B21 [get_ports {ddr3_dqs_p[2]}]
 set_property PACKAGE_PIN A21 [get_ports {ddr3_dqs_n[2]}]
 set_property PACKAGE_PIN F18 [get_ports {ddr3_dqs_p[3]}]
 set_property PACKAGE_PIN E18 [get_ports {ddr3_dqs_n[3]}]
-set_property SLEW FAST [get_ports ddr3_dqs*]
-set_property IOSTANDARD DIFF_SSTL15 [get_ports ddr3_dqs*]
+set_property SLEW FAST [get_ports {ddr3_dqs*}]
+set_property IOSTANDARD DIFF_SSTL15 [get_ports {ddr3_dqs*}]
 
 set_property PACKAGE_PIN J14 [get_ports {ddr3_ck_p[0]}]
 set_property PACKAGE_PIN H14 [get_ports {ddr3_ck_n[0]}]
-set_property SLEW FAST [get_ports ddr3_ck*]
-set_property IOSTANDARD DIFF_SSTL15 [get_ports ddr3_ck_*]
+set_property SLEW FAST [get_ports {ddr3_ck*}]
+set_property IOSTANDARD DIFF_SSTL15 [get_ports {ddr3_ck_*}]
 
 set_clock_groups -asynchronous -group [get_clocks {mmcm0_clk0 okUH0}] -group [get_clocks {sys_clk_p clk_pll_i}]
-
