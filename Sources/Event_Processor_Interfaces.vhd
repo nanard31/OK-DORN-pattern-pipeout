@@ -90,7 +90,7 @@ begin
 		 
 		 
 		 
-				 if timer_instrument >= to_unsigned(1000,16) then	--	write one data in fifo pipe in
+				 if timer_instrument >= to_unsigned(500,16) then	--	write one data in fifo pipe in
 	
 				 write_instrument <= '1';
 				 timer_instrument <=	(others => '0');
@@ -114,12 +114,12 @@ begin
  end if;
  end process;
  
-BigVector(159 downto 128)	<=	(others => '1');
+BigVector(255 downto 160)	<=	(others => '0');
 BigVector(159 downto 128)	<=	x"0000"&dataout_instrument;	
-BigVector(127 downto 96)	<=	x"0000"&dataout_instrument;	
-BigVector(95 downto 64)		<=	x"0000"&dataout_instrument;	
-BigVector(63 downto 32)		<=	x"0000"&dataout_instrument;	
-BigVector(31 downto 16)		<=	dataout_instrument;	
+BigVector(127 downto 96)	<=	(others => '0');
+BigVector(95 downto 64)		<=	(others => '0');
+BigVector(63 downto 32)		<=	(others => '0');
+BigVector(31 downto 16)		<=	(others => '0');
 BigVector(15 downto 0)		<=	dataout_instrument;		 
 
 o_ADC_Generator_mode<='0' when (i_wire = '0') else '1';
