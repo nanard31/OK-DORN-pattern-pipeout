@@ -46,10 +46,10 @@ module OctoPulse(
     output wire [3 :0]  ddr3_dm,
     inout  wire [3 :0]  ddr3_dqs_p,
     inout  wire [3 :0]  ddr3_dqs_n,
-    output wire         ddr3_reset_n,
+    output wire         ddr3_reset_n
 
-	input	wire		okClk,	
-    input  wire        	sys_rst              // for simulation
+	//input	wire		okClk,	
+    //input  wire        	sys_rst              // for simulation
 	
 	//ADC PART
 // ADCLTC2311 SPI Signals                          // ADC NOT CONNECTED FOR THE MOMENT (GENERATOR IMPLEMENTED)
@@ -81,7 +81,7 @@ module OctoPulse(
 
     wire init_calib_complete;
     wire [63 :0]  chipscope_wire;
-   // reg           sys_rst;        // comment for simulation
+    reg           sys_rst;        // comment for simulation
     wire sys_clk_i;
     wire clk_200MHz;
     wire [29 :0]  app_addr;
@@ -103,7 +103,7 @@ module OctoPulse(
     // Front Panel
 
     // Target interface bus:
-    //wire         okClk;			//comment for simulation
+    wire         okClk;			//comment for simulation
     wire [112:0] okHE;
     wire [64:0]  okEH;
 
@@ -163,18 +163,18 @@ module OctoPulse(
     //assign led = xem7310_led({1'h0,pipe_in_wr_count});
     
 
-//    //MIG Infrastructure Reset        //comment for simulation
-//    reg [31:0] rst_cnt;
-//    initial rst_cnt = 32'b0;
-//    always @(posedge okClk) begin
-//        if(rst_cnt < 32'h0800_0000) begin
-//            rst_cnt <= rst_cnt + 1;
-//            sys_rst <= 1'b1;
-//        end
-//        else begin
-//            sys_rst <= 1'b0;
-//        end
-//    end
+    //MIG Infrastructure Reset        //comment for simulation
+    reg [31:0] rst_cnt;
+    initial rst_cnt = 32'b0;
+    always @(posedge okClk) begin
+        if(rst_cnt < 32'h0800_0000) begin
+            rst_cnt <= rst_cnt + 1;
+            sys_rst <= 1'b1;
+        end
+        else begin
+            sys_rst <= 1'b0;
+        end
+    end
     
  //differencial clock buffer   
  clk_wiz_0 clock_buf(
@@ -327,7 +327,7 @@ wire debug_read/* synthesis keep */;
         .okHU(okHU),
         .okUHU(okUHU),
         .okAA(okAA),
-        .okClk(),		//remove for simualtion okclk
+        .okClk(okClk),		//remove for simualtion okclk
         .okHE(okHE),
         .okEH(okEH)
     );
@@ -578,7 +578,7 @@ assign BigVector = {//32 bit bloc
 	////////////////////////////////////////////////////////////////////	
           
     (* DONT_TOUCH = "TRUE" *) fifo_w32_1024_r256_128 okPipeIn_fifo (
-        .rst    (sys_rst),    //(ep00wire[2]),		 // fix for simulation 
+        .rst    (ep00wire[2]),		 // fix for simulation 
         //.wr_clk(Clk_100MHz),
         .wr_clk(Clk_100MHz),
         .rd_clk(clk),
@@ -600,7 +600,7 @@ assign BigVector = {//32 bit bloc
 	////////////////////////////////////////////////////////////////////
 	
     (* DONT_TOUCH = "TRUE" *) fifo_w256_128_r32_1024 okPipeOut_fifo (
-        .rst    (sys_rst),                    //(ep00wire[2]), // fix for simulation 
+        .rst    (ep00wire[2]), // fix for simulation 
         .wr_clk(clk),
         .rd_clk(okClk),
         .din(pipe_out_data), // Bus [255 : 0]
@@ -618,11 +618,14 @@ assign BigVector = {//32 bit bloc
 	////////////////////////////////////////////////////////////////////
         
         Event_Processor_Interfaces Event_Processor_Interfaces_inst(
-        .i_Rst_n    (sys_rst),//(ep00wire[2]),                // fix for simulation 
+        .i_Rst_n    (ep00wire[2]),                // fix for simulation 
 		.init_calib_complete(init_calib_complete),
         .i_Clk(Clk_100MHz),//clk_200MHz),//divided_clk),//okClk)                ,//clk_100Mhz),//okClk)                ,//: -- 100 MHz
 		.BigVector(BigVector),
-		.write_instrument(write_instrument) 
+		.write_instrument(write_instrument),
+
+		.i_wire(ep00wire[3]),
+		.o_ADC_Generator_mode(o_ADC_Generator_mode)		
         );
 
 //assign BigVector = 1'b1;
