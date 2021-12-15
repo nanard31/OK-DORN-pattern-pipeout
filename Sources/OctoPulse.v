@@ -121,7 +121,7 @@ module OctoPulse(
     wire         pipe_out_write/* synthesis keep */;
     wire [255:0] pipe_out_data/* synthesis keep */;
     wire [15:0]   pipe_out_rd_count/* synthesis keep */;
-    wire [5:0]   pipe_out_wr_count/* synthesis keep */;
+    wire [11:0]   pipe_out_wr_count/* synthesis keep */;
     wire         pipe_out_full/* synthesis keep */;
     wire         pipe_out_empty/* synthesis keep */;
     reg          pipe_out_ready/* synthesis keep */;
@@ -339,7 +339,7 @@ wire debug_read/* synthesis keep */;
     wire [15:0] Address_generator/* synthesis keep */;  
     wire [15:0] Data_generator/* synthesis keep */;  
     wire [15:0] Delay_value/* synthesis keep */;  
-    wire [27:0] Time_period/* synthesis keep */;  
+    wire [31:0] Time_period/* synthesis keep */;  
     wire o_ADC_Generator_mode/* synthesis keep */;
     wire [15:0] TrigIn40;
     wire TrigIn41;
@@ -610,8 +610,8 @@ assign BigVector = {//32 bit bloc
         .full(pipe_out_full), 
         .empty(pipe_out_empty),
         .valid(),
-        .rd_data_count(pipe_out_rd_count), // Bus [9 : 0]
-        .wr_data_count(pipe_out_wr_count)); // Bus [6 : 0]
+        .rd_data_count(pipe_out_rd_count), // Bus [14 : 0]
+        .wr_data_count(pipe_out_wr_count)); // Bus [11 : 0]
 
 	//////////////////////////////////////////////////////////////////////
 	// Event processor
@@ -625,7 +625,10 @@ assign BigVector = {//32 bit bloc
 		.write_instrument(write_instrument),
 
 		.i_wire(ep00wire[3]),
-		.o_ADC_Generator_mode(o_ADC_Generator_mode)		
+		.o_ADC_Generator_mode(o_ADC_Generator_mode),
+		.Time_period (Time_period),
+		.start (ep00wire[4])
+				
         );
 
 //assign BigVector = 1'b1;

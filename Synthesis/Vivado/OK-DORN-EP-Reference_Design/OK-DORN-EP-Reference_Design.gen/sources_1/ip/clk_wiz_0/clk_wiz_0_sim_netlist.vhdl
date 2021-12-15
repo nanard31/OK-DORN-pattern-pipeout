@@ -1,7 +1,7 @@
 -- Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2020.2 (win64) Build 3064766 Wed Nov 18 09:12:45 MST 2020
--- Date        : Tue Dec 14 13:48:25 2021
+-- Date        : Wed Dec 15 13:24:29 2021
 -- Host        : DESKTOP-BSP8Q2B running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode funcsim
 --               c:/OK-DORN-pattern-pipeout/Synthesis/Vivado/OK-DORN-EP-Reference_Design/OK-DORN-EP-Reference_Design.gen/sources_1/ip/clk_wiz_0/clk_wiz_0_sim_netlist.vhdl

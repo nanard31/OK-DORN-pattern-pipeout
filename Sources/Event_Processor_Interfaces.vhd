@@ -51,7 +51,11 @@ entity Event_Processor_Interfaces is
 		
 		i_wire                : in std_logic;
 		
-		o_ADC_Generator_mode  : out std_logic
+		o_ADC_Generator_mode  : out std_logic;
+		
+		Time_period           : in  std_logic_vector(31 downto 0);
+		
+		start                 : in std_logic
                
     );
 
@@ -63,7 +67,7 @@ signal dataout_instrument : STD_LOGIC_VECTOR(15 downto 0);
 
 
 signal simulate_data_instrument : unsigned(15 downto 0);
-signal timer_instrument : unsigned(15 downto 0);
+signal timer_instrument : unsigned(31 downto 0);
 
 begin
 
@@ -90,7 +94,7 @@ begin
 		 
 		 
 		 
-				 if timer_instrument >= to_unsigned(500,16) then	--	write one data in fifo pipe in
+				 if (timer_instrument >= unsigned(Time_period)) and start = '1' then	--	write one data in fifo pipe in
 	
 				 write_instrument <= '1';
 				 timer_instrument <=	(others => '0');

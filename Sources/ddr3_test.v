@@ -49,8 +49,8 @@ module ddr3_test
 
 
 
-localparam FIFO_SIZE           = 128;
-localparam FIFO_SIZE_OUT           = 128;
+localparam FIFO_SIZE           = 4096;
+localparam FIFO_SIZE_OUT           = 4096; //   2^ob_count range
 localparam BURST_UI_WORD_COUNT = 2'd1; //(WORD_SIZE*BURST_MODE/UI_SIZE) = BURST_UI_WORD_COUNT : 32*8/256 = 1
 localparam ADDRESS_INCREMENT   = 5'd8; // UI Address is a word address. BL8 Burst Mode = 8.
 

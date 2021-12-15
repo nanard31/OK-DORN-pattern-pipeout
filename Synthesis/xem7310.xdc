@@ -1,11 +1,3 @@
-set_property PACKAGE_PIN K17 [get_ports {ddr3_dqs_p[1]}]
-set_property PACKAGE_PIN J17 [get_ports {ddr3_dqs_n[1]}]
-set_property PACKAGE_PIN B21 [get_ports {ddr3_dqs_p[2]}]
-set_property PACKAGE_PIN A21 [get_ports {ddr3_dqs_n[2]}]
-set_property PACKAGE_PIN M22 [get_ports {ddr3_dqs_n[0]}]
-set_property PACKAGE_PIN N22 [get_ports {ddr3_dqs_p[0]}]
-set_property PACKAGE_PIN F18 [get_ports {ddr3_dqs_p[3]}]
-set_property PACKAGE_PIN E18 [get_ports {ddr3_dqs_n[3]}]
 ############################################################################
 # XEM7310 - Xilinx constraints file
 #
@@ -19,6 +11,47 @@ set_property PACKAGE_PIN E18 [get_ports {ddr3_dqs_n[3]}]
 set_property CFGBVS GND [current_design]
 set_property CONFIG_VOLTAGE 1.8 [current_design]
 set_property BITSTREAM.GENERAL.COMPRESS True [current_design]
+
+############################################################################
+## ADCs
+############################################################################
+
+#set_property PACKAGE_PIN AB5 [get_ports  {o_ADC_SCK_p[0]}]
+#set_property PACKAGE_PIN AA5 [get_ports {o_ADC_SCK_n[0]}]
+#set_property PACKAGE_PIN Y9  [get_ports  {o_ADC_CNV_n[0]}]
+#set_property PACKAGE_PIN AA1 [get_ports {i_ADC_SDO_p[0]}]
+#set_property PACKAGE_PIN AB1 [get_ports {i_ADC_SDO_n[0]}]
+#set_property PACKAGE_PIN R6 [get_ports {i_ADC_SDO_p[1]}]
+#set_property PACKAGE_PIN T6 [get_ports {i_ADC_SDO_n[1]}]
+
+#set_property PACKAGE_PIN AB2 [get_ports {o_ADC_SCK_p[2]}]
+#set_property PACKAGE_PIN AB3 [get_ports {o_ADC_SCK_n[2]}]
+#set_property PACKAGE_PIN U3  [get_ports {o_ADC_CNV_n[2]}]
+#set_property PACKAGE_PIN Y13 [get_ports {i_ADC_SDO_p[2]}]
+#set_property PACKAGE_PIN AA14 [get_ports {i_ADC_SDO_n[2]}]
+#set_property PACKAGE_PIN AB13 [get_ports {i_ADC_SDO_p[3]}]
+#set_property PACKAGE_PIN AA13 [get_ports {i_ADC_SDO_n[3]}]
+
+#set_property PACKAGE_PIN AA3 [get_ports {o_ADC_SCK_p[4]}]
+#set_property PACKAGE_PIN Y3 [get_ports {o_ADC_SCK_n[4]}]
+#set_property PACKAGE_PIN W9 [get_ports {o_ADC_CNV_n[4]}]
+#set_property PACKAGE_PIN W2 [get_ports {i_ADC_SDO_p[4]}]
+#set_property PACKAGE_PIN Y2 [get_ports {i_ADC_SDO_n[4]}]
+#set_property PACKAGE_PIN AB7 [get_ports {i_ADC_SDO_p[5]}]
+#set_property PACKAGE_PIN AB6 [get_ports {i_ADC_SDO_n[5]}]
+
+#set_property PACKAGE_PIN V4 [get_ports {o_ADC_SCK_p[6]}]
+#set_property PACKAGE_PIN W4 [get_ports {o_ADC_SCK_n[6]}]
+#set_property PACKAGE_PIN Y6 [get_ports {o_ADC_CNV_n[6]}]
+#set_property PACKAGE_PIN AB16 [get_ports {i_ADC_SDO_p[6]}]
+#set_property PACKAGE_PIN AB17 [get_ports {i_ADC_SDO_n[6]}]
+#set_property PACKAGE_PIN W16 [get_ports {i_ADC_SDO_p[7]}]
+#set_property PACKAGE_PIN W15 [get_ports {i_ADC_SDO_n[7]}]
+
+#set_property IOSTANDARD LVDS_25 [get_ports {o_ADC_SCK_p[*]}]
+#set_property IOSTANDARD LVDS_25 [get_ports {o_ADC_SCK_n[*]}]
+#set_property IOSTANDARD LVDS_25 [get_ports {i_ADC_SDO_p[*]}]
+#set_property IOSTANDARD LVDS_25 [get_ports {i_ADC_SDO_n[*]}]
 
 ############################################################################
 ## FrontPanel Host Interface
@@ -76,7 +109,6 @@ set_property IOSTANDARD LVCMOS18 [get_ports okAA]
 
 
 create_clock -period 9.920 -name okUH0 [get_ports {okUH[0]}]
-
 
 set_input_delay -clock [get_clocks okUH0] -max -add_delay 8.000 [get_ports {okUH[*]}]
 set_input_delay -clock [get_clocks okUH0] -min -add_delay 10.000 [get_ports {okUH[*]}]
@@ -204,6 +236,14 @@ set_property PACKAGE_PIN B20 [get_ports {ddr3_dm[3]}]
 set_property SLEW FAST [get_ports {ddr3_dm[*]}]
 set_property IOSTANDARD SSTL15 [get_ports {ddr3_dm[*]}]
 
+set_property PACKAGE_PIN N22 [get_ports {ddr3_dqs_p[0]}]
+set_property PACKAGE_PIN M22 [get_ports {ddr3_dqs_n[0]}]
+set_property PACKAGE_PIN K17 [get_ports {ddr3_dqs_p[1]}]
+set_property PACKAGE_PIN J17 [get_ports {ddr3_dqs_n[1]}]
+set_property PACKAGE_PIN B21 [get_ports {ddr3_dqs_p[2]}]
+set_property PACKAGE_PIN A21 [get_ports {ddr3_dqs_n[2]}]
+set_property PACKAGE_PIN F18 [get_ports {ddr3_dqs_p[3]}]
+set_property PACKAGE_PIN E18 [get_ports {ddr3_dqs_n[3]}]
 set_property SLEW FAST [get_ports ddr3_dqs*]
 set_property IOSTANDARD DIFF_SSTL15 [get_ports ddr3_dqs*]
 
@@ -211,73 +251,6 @@ set_property PACKAGE_PIN J14 [get_ports {ddr3_ck_p[0]}]
 set_property PACKAGE_PIN H14 [get_ports {ddr3_ck_n[0]}]
 set_property SLEW FAST [get_ports ddr3_ck*]
 set_property IOSTANDARD DIFF_SSTL15 [get_ports ddr3_ck_*]
-set_property IOSTANDARD LVCMOS18 [get_ports o_ADC_Conv_n]
-set_property IOSTANDARD LVCMOS18 [get_ports o_ADC_Sck]
-set_property IOSTANDARD LVCMOS18 [get_ports i_ADC_SDO]
-
-set_property PACKAGE_PIN Y9 [get_ports o_ADC_Conv_n]
-set_property PACKAGE_PIN T6 [get_ports o_ADC_Sck]
-set_property PACKAGE_PIN R6 [get_ports i_ADC_SDO]
 
 set_clock_groups -asynchronous -group [get_clocks {mmcm0_clk0 okUH0}] -group [get_clocks {sys_clk_p clk_pll_i}]
-
-#set_property IOSTANDARD LVCMOS18 [get_ports o_ADC_Conv_n_test]
-#set_property IOSTANDARD LVCMOS18 [get_ports o_ADC_Sck_test]
-
-#set_property IOSTANDARD LVCMOS18 [get_ports o_ADC_SDO_test]
-
-#set_property SLEW FAST [get_ports o_ADC_Sck]
-#set_property SLEW FAST [get_ports o_ADC_Conv_n]
-
-#set_input_delay -clock clk_200MHz 1 [get_ports i_ADC_SDO]
-#set_output_delay –clock clk_200MHz 1 [get_ports o_ADC_Sck]
-#set_output_delay –clock clk_200MHz 1 [get_ports o_ADC_Conv_n]
-#create_generated_clock -name clk_sdo -source [get_ports {i_ADC_SDO}]
-#create_generated_clock -source [get_ports clk_200Mhz] -name myclock
-#create_clock -period 10.000 -name clk_100MHz -waveform {0.000 5.000} [get_nets clock_buf/clk_100MHz]
-#create_clock -period 5.000 -name clk_200MHz -waveform {0.000 2.500} [get_nets clk_200MHz]
-
-#create_generated_clock -name clock_block/i2c_si5324/mI2C_CTRL_CLK_reg_0 -source [get_pins clock_block/clk_wiz_0/inst/mmcm_adv_inst/CLKOUT1] -divide_by 17000 [get_pins clock_block/i2c_si5324/mI2C_CTRL_CLK_reg/Q]
-#set_clock_groups -asynchronous -group [get_clocks clk_out2_clk_wiz_0] -group [get_clocks clock_block/i2c_si5324/mI2C_CTRL_CLK_reg_0]
-#set_clock_groups -asynchronous -group [get_clocks clock_block/i2c_si5324/mI2C_CTRL_CLK_reg_0] -group [get_clocks CL_block/CL1_ZClk_OBUF]
-#set_clock_groups -asynchronous -group [get_clocks clkout0] -group [get_clocks CL_block/CL1_ZClk_OBUF]
-
-#set_clock_groups -asynchronous -group [get_clocks clk_out2_clk_wiz_0] -group [get_clocks clock_block/i2c_si5324/mI2C_CTRL_CLK_reg_0]
-#set_clock_groups -asynchronous -group [get_clocks clock_block/i2c_si5324/mI2C_CTRL_CLK_reg_0] -group [get_clocks CL_block/CL1_ZClk_OBUF]
-#set_clock_groups -asynchronous -group [get_clocks clkout0] -group [get_clocks CL_block/CL1_ZClk_OBUF]
-
-
-
-
-
-
-#create_generated_clock -name My_constraint_clock -source [get_pins clock_buf/inst/clk_100MHz] -multiply_by 1 [get_pins clock_buf/inst/clk_100MHz]
-#set_input_delay -clock [get_clocks *100MH*] -clock_fall -fall 2.000 [get_ports -filter { NAME =~  "*SDO*" && DIRECTION == "IN" }]
-
-set_input_delay -clock [get_clocks *ok*] -clock_fall -fall -min -add_delay 2.000 [get_ports i_ADC_SDO]
-set_input_delay -clock [get_clocks okUH0] -clock_fall -fall -max -add_delay 4.000 [get_ports i_ADC_SDO]
-
-set_property BEL B5FF [get_cells EP_inst/o_ADC_Generator_mode_reg]
-set_property LOC SLICE_X8Y64 [get_cells EP_inst/o_ADC_Generator_mode_reg]
-set_property BEL D5FF [get_cells {wo05/wirehold_reg[0]}]
-set_property LOC SLICE_X9Y65 [get_cells {wo05/wirehold_reg[0]}]
-set_input_delay -clock [get_clocks *clk_200MHz*] -clock_fall -min -add_delay 2.000 [get_ports -filter { NAME =~  "*SDO*" && DIRECTION == "IN" }]
-set_input_delay -clock [get_clocks *clk_200MHz*] -clock_fall -max -add_delay 4.000 [get_ports -filter { NAME =~  "*SDO*" && DIRECTION == "IN" }]
-
-#set_max_delay -from [get_pins {wi00/ep_dataout_reg[2]_replica_11/C}] -to [get_pins {EP_inst/SHIFT_divider/Result_reg[26]/CLR}] 5.000
-#set_max_delay -from [get_pins {wi01/ep_dataout_reg[10]/C}] -to [get_pins {EP_inst/sample_gen/Time_counter_reg[25]/D}] 10.000
-
-#set_property IOSTANDARD LVCMOS18 [get_ports CLK_SPI]
-
-#set_property SLEW SLOW [get_ports o_CLK_SPI]
-#set_property DRIVE 12 [get_ports o_CLK_SPI]
-
-
-
-
-
-#set_property PACKAGE_PIN W7 [get_ports o_MOSI]
-
-#set_property PACKAGE_PIN W7 [get_ports o_ADC_Sck_test]
-#set_property IOSTANDARD LVCMOS18 [get_ports o_ADC_Sck_test]
 
