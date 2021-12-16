@@ -416,7 +416,7 @@ entity mig_7series_0_mig is
                                      -- It is associated to a set of IODELAYs with
                                      -- an IDELAYCTRL that have same IODELAY CONTROLLER
                                      -- clock frequency (300MHz/400MHz).
-   SYSCLK_TYPE           : string  := "NO_BUFFER";
+   SYSCLK_TYPE           : string  := "DIFFERENTIAL";
                                      -- System clock type DIFFERENTIAL, SINGLE_ENDED,
                                      -- NO_BUFFER
    REFCLK_TYPE           : string  := "USE_SYSTEM_CLOCK";
@@ -504,8 +504,9 @@ entity mig_7series_0_mig is
    ddr3_odt                       : out   std_logic_vector(ODT_WIDTH-1 downto 0);
 
    -- Inputs
-   -- Single-ended system clock
-   sys_clk_i                      : in    std_logic;
+   -- Differential system clocks
+   sys_clk_p                      : in    std_logic;
+   sys_clk_n                      : in    std_logic;
    
    -- user interface signals
    app_addr             : in    std_logic_vector(ADDR_WIDTH-1 downto 0);
@@ -1064,8 +1065,7 @@ architecture arch_mig_7series_0_mig of mig_7series_0_mig is
       
   signal init_calib_complete_i       : std_logic;
 
-  signal sys_clk_p       : std_logic;
-  signal sys_clk_n          : std_logic;
+  signal sys_clk_i      : std_logic;
   signal mmcm_clk           : std_logic;
   signal clk_ref_p               : std_logic;
   signal clk_ref_n               : std_logic;
@@ -1169,8 +1169,7 @@ begin
   ui_clk <= clk;
   ui_clk_sync_rst <= rst;
   
-  sys_clk_p <= '0';
-  sys_clk_n <= '0';
+  sys_clk_i <= '0';
   clk_ref_i <= '0';
   init_calib_complete         <= init_calib_complete_i;
   device_temp <= device_temp_s;

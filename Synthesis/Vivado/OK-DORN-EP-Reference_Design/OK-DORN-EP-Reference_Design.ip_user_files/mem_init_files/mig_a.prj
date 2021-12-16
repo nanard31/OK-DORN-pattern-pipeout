@@ -23,7 +23,7 @@
 
   <Version>4.2</Version>
 
-  <SystemClock>No Buffer</SystemClock>
+  <SystemClock>Differential</SystemClock>
 
   <ReferenceClock>Use System Clock</ReferenceClock>
 
@@ -139,6 +139,9 @@
       <Pin IN_TERM="" IOSTANDARD="LVCMOS15" PADName="F21" SLEW="FAST" VCCAUX_IO="" name="ddr3_reset_n"/>
       <Pin IN_TERM="" IOSTANDARD="SSTL15" PADName="J20" SLEW="FAST" VCCAUX_IO="" name="ddr3_we_n"/>
     </PinSelection>
+    <System_Clock>
+      <Pin Bank="13" PADName="W11/W12(CC_P/N)" name="sys_clk_p/n"/>
+    </System_Clock>
     <System_Control>
       <Pin Bank="Select Bank" PADName="No connect" name="sys_rst"/>
       <Pin Bank="Select Bank" PADName="No connect" name="init_calib_complete"/>

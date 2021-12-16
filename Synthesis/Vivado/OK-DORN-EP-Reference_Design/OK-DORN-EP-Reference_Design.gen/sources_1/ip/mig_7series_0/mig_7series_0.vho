@@ -108,7 +108,8 @@ component mig_7series_0
       ui_clk_sync_rst           : out   std_logic;
       init_calib_complete       : out   std_logic;
       -- System Clock Ports
-      sys_clk_i                      : in    std_logic;
+      sys_clk_p                      : in    std_logic;
+      sys_clk_n                      : in    std_logic;
     sys_rst                     : in    std_logic
   );
 end component mig_7series_0;
@@ -157,7 +158,8 @@ end component mig_7series_0;
        ui_clk_sync_rst                => ui_clk_sync_rst,
        app_wdf_mask                   => app_wdf_mask,
        -- System Clock Ports
-       sys_clk_i                       => sys_clk_i,
+       sys_clk_p                       => sys_clk_p,
+       sys_clk_n                       => sys_clk_n,
       sys_rst                        => sys_rst
     );
 

@@ -176,7 +176,7 @@ module OctoPulse(
         end
     end
     
- //differencial clock buffer   
+ /* //differencial clock buffer   
  clk_wiz_0 clock_buf(
   // Clock out ports
   .clk_200Mhz   	(clk_200MHz),
@@ -185,7 +185,7 @@ module OctoPulse(
   // Clock in ports
   .clk_in1_p    	(sys_clk_p),
   .clk_in1_n		(sys_clk_n)
- );
+ ); */
  
  reg [15:0] burst_counter/* synthesis keep */;
  reg Write_ddr3/* synthesis keep */;
@@ -234,11 +234,11 @@ module OctoPulse(
 
         .app_wdf_mask                   (app_wdf_mask),
 
-        // System Clock Ports
-        //.sys_clk_p                      (sys_clk_p),
-        //.sys_clk_n                      (sys_clk_n),
-        .sys_clk_i                      (sys_clk_i),//sys_clk_i),
-        .sys_rst                        (sys_rst)// & !locked)
+		// System Clock Ports
+		.sys_clk_p                      (sys_clk_p),
+		.sys_clk_n                      (sys_clk_n),
+	
+		.sys_rst                        (sys_rst)
     );
 wire  [29:0] o_rd_byte_index/* synthesis keep */;
 wire  [29:0] o_wr_byte_index/* synthesis keep */;
@@ -345,7 +345,7 @@ wire debug_read/* synthesis keep */;
     wire TrigIn41;
     reg start_led;
     
-    always@(posedge Clk_100MHz or posedge rst_Fifo_in)
+    always@(posedge clk or posedge rst_Fifo_in)
     begin
         //if(ep00wire[2] == 1'b1)
         if(rst_Fifo_in == 1'b1)
@@ -580,7 +580,7 @@ assign BigVector = {//32 bit bloc
     (* DONT_TOUCH = "TRUE" *) fifo_w32_1024_r256_128 okPipeIn_fifo (
         .rst    (ep00wire[2]),		 // fix for simulation 
         //.wr_clk(Clk_100MHz),
-        .wr_clk(Clk_100MHz),
+        .wr_clk(clk),
         .rd_clk(clk),
         .din(BigVector), // Bus [31 : 0]
         .wr_en(write_instrument),
@@ -620,7 +620,7 @@ assign BigVector = {//32 bit bloc
         Event_Processor_Interfaces Event_Processor_Interfaces_inst(
         .i_Rst_n    (ep00wire[2]),                // fix for simulation 
 		.init_calib_complete(init_calib_complete),
-        .i_Clk(Clk_100MHz),//clk_200MHz),//divided_clk),//okClk)                ,//clk_100Mhz),//okClk)                ,//: -- 100 MHz
+        .i_Clk(clk),//clk_200MHz),//divided_clk),//okClk)                ,//clk_100Mhz),//okClk)                ,//: -- 100 MHz
 		.BigVector(BigVector),
 		.write_instrument(write_instrument),
 

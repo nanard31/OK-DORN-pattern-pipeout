@@ -199,8 +199,9 @@ entity example_top is
    ddr3_odt                       : out   std_logic_vector(0 downto 0);
 
    -- Inputs
-   -- Single-ended system clock
-   sys_clk_i                      : in    std_logic;
+   -- Differential system clocks
+   sys_clk_p                      : in    std_logic;
+   sys_clk_n                      : in    std_logic;
    
    
    tg_compare_error              : out std_logic;
@@ -314,7 +315,8 @@ architecture arch_example_top of example_top is
       ui_clk_sync_rst           : out   std_logic;
       init_calib_complete       : out   std_logic;
       -- System Clock Ports
-      sys_clk_i                      : in    std_logic;
+      sys_clk_p                      : in    std_logic;
+      sys_clk_n                      : in    std_logic;
       device_temp     : out std_logic_vector(11 downto 0);
       sys_rst             : in std_logic
       );
@@ -564,7 +566,8 @@ begin
        ui_clk_sync_rst                => rst,
        app_wdf_mask                   => app_wdf_mask,
 -- System Clock Ports
-       sys_clk_i                       => sys_clk_i,
+       sys_clk_p                       => sys_clk_p,
+       sys_clk_n                       => sys_clk_n,
         sys_rst                        => sys_rst
         );
 -- End of User Design top instance

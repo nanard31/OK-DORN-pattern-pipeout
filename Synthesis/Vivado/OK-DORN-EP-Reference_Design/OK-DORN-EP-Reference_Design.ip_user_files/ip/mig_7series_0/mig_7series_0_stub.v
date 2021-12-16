@@ -1,7 +1,7 @@
 // Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2020.2 (win64) Build 3064766 Wed Nov 18 09:12:45 MST 2020
-// Date        : Wed Dec 15 13:28:13 2021
+// Date        : Wed Dec 15 18:51:46 2021
 // Host        : DESKTOP-BSP8Q2B running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode synth_stub
 //               c:/OK-DORN-pattern-pipeout/Synthesis/Vivado/OK-DORN-EP-Reference_Design/OK-DORN-EP-Reference_Design.gen/sources_1/ip/mig_7series_0/mig_7series_0_stub.v
@@ -18,8 +18,8 @@ module mig_7series_0(ddr3_dq, ddr3_dqs_p, ddr3_dqs_n, ddr3_addr,
   ddr3_dm, ddr3_odt, app_addr, app_cmd, app_en, app_wdf_data, app_wdf_end, app_wdf_mask, 
   app_wdf_wren, app_rd_data, app_rd_data_end, app_rd_data_valid, app_rdy, app_wdf_rdy, 
   app_sr_req, app_ref_req, app_zq_req, app_sr_active, app_ref_ack, app_zq_ack, ui_clk, 
-  ui_clk_sync_rst, init_calib_complete, sys_clk_i, device_temp, sys_rst)
-/* synthesis syn_black_box black_box_pad_pin="ddr3_dq[31:0],ddr3_dqs_p[3:0],ddr3_dqs_n[3:0],ddr3_addr[14:0],ddr3_ba[2:0],ddr3_ras_n,ddr3_cas_n,ddr3_we_n,ddr3_reset_n,ddr3_ck_p[0:0],ddr3_ck_n[0:0],ddr3_cke[0:0],ddr3_dm[3:0],ddr3_odt[0:0],app_addr[28:0],app_cmd[2:0],app_en,app_wdf_data[255:0],app_wdf_end,app_wdf_mask[31:0],app_wdf_wren,app_rd_data[255:0],app_rd_data_end,app_rd_data_valid,app_rdy,app_wdf_rdy,app_sr_req,app_ref_req,app_zq_req,app_sr_active,app_ref_ack,app_zq_ack,ui_clk,ui_clk_sync_rst,init_calib_complete,sys_clk_i,device_temp[11:0],sys_rst" */;
+  ui_clk_sync_rst, init_calib_complete, sys_clk_p, sys_clk_n, device_temp, sys_rst)
+/* synthesis syn_black_box black_box_pad_pin="ddr3_dq[31:0],ddr3_dqs_p[3:0],ddr3_dqs_n[3:0],ddr3_addr[14:0],ddr3_ba[2:0],ddr3_ras_n,ddr3_cas_n,ddr3_we_n,ddr3_reset_n,ddr3_ck_p[0:0],ddr3_ck_n[0:0],ddr3_cke[0:0],ddr3_dm[3:0],ddr3_odt[0:0],app_addr[28:0],app_cmd[2:0],app_en,app_wdf_data[255:0],app_wdf_end,app_wdf_mask[31:0],app_wdf_wren,app_rd_data[255:0],app_rd_data_end,app_rd_data_valid,app_rdy,app_wdf_rdy,app_sr_req,app_ref_req,app_zq_req,app_sr_active,app_ref_ack,app_zq_ack,ui_clk,ui_clk_sync_rst,init_calib_complete,sys_clk_p,sys_clk_n,device_temp[11:0],sys_rst" */;
   inout [31:0]ddr3_dq;
   inout [3:0]ddr3_dqs_p;
   inout [3:0]ddr3_dqs_n;
@@ -55,7 +55,8 @@ module mig_7series_0(ddr3_dq, ddr3_dqs_p, ddr3_dqs_n, ddr3_addr,
   output ui_clk;
   output ui_clk_sync_rst;
   output init_calib_complete;
-  input sys_clk_i;
+  input sys_clk_p;
+  input sys_clk_n;
   output [11:0]device_temp;
   input sys_rst;
 endmodule

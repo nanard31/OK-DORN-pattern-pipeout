@@ -2,7 +2,7 @@
 sendToHSL_setWireIn(0, 4)//reset
 waitMs(1000)
 sendToHSL_setWireIn(0, 0)//unreset
-sendToHSL_setWireIn(1, 1)//cycle pattern
+sendToHSL_setWireIn(1, 100)//cycle pattern
 sendToHSL_setWireIn(0, 16)//unreset
 
 //sendSTART_SC_ACQ()
