@@ -67,6 +67,7 @@ fifo_w32_1024_r256_128 your_instance_name (
   .valid(valid),                  // output wire valid
   .rd_data_count(rd_data_count),  // output wire [9 : 0] rd_data_count
   .wr_data_count(wr_data_count),  // output wire [9 : 0] wr_data_count
+  .prog_empty(prog_empty),        // output wire prog_empty
   .wr_rst_busy(wr_rst_busy),      // output wire wr_rst_busy
   .rd_rst_busy(rd_rst_busy)      // output wire rd_rst_busy
 );

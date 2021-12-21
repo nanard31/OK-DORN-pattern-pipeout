@@ -2,6 +2,7 @@
 sendToHSL_setWireIn(0, 4)//reset
 waitMs(1000)
 sendToHSL_setWireIn(0, 0)//unreset
+waitMs(1000)
 sendToHSL_setWireIn(1, 100)//cycle pattern
 sendToHSL_setWireIn(0, 16)//unreset
 

@@ -64,8 +64,8 @@ COMPONENT fifo_w256_128_r32_1024
     full : OUT STD_LOGIC;
     empty : OUT STD_LOGIC;
     valid : OUT STD_LOGIC;
-    rd_data_count : OUT STD_LOGIC_VECTOR(14 DOWNTO 0);
-    wr_data_count : OUT STD_LOGIC_VECTOR(11 DOWNTO 0);
+    rd_data_count : OUT STD_LOGIC_VECTOR(13 DOWNTO 0);
+    wr_data_count : OUT STD_LOGIC_VECTOR(10 DOWNTO 0);
     wr_rst_busy : OUT STD_LOGIC;
     rd_rst_busy : OUT STD_LOGIC
   );

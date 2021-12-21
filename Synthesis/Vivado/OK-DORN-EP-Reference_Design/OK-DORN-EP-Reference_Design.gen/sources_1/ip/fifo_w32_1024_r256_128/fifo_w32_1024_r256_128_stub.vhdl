@@ -1,7 +1,7 @@
 -- Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2020.2 (win64) Build 3064766 Wed Nov 18 09:12:45 MST 2020
--- Date        : Wed Dec 15 13:25:04 2021
+-- Date        : Fri Dec 17 16:22:42 2021
 -- Host        : DESKTOP-BSP8Q2B running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode synth_stub
 --               c:/OK-DORN-pattern-pipeout/Synthesis/Vivado/OK-DORN-EP-Reference_Design/OK-DORN-EP-Reference_Design.gen/sources_1/ip/fifo_w32_1024_r256_128/fifo_w32_1024_r256_128_stub.vhdl
@@ -26,6 +26,7 @@ entity fifo_w32_1024_r256_128 is
     valid : out STD_LOGIC;
     rd_data_count : out STD_LOGIC_VECTOR ( 9 downto 0 );
     wr_data_count : out STD_LOGIC_VECTOR ( 9 downto 0 );
+    prog_empty : out STD_LOGIC;
     wr_rst_busy : out STD_LOGIC;
     rd_rst_busy : out STD_LOGIC
   );
@@ -36,7 +37,7 @@ architecture stub of fifo_w32_1024_r256_128 is
 attribute syn_black_box : boolean;
 attribute black_box_pad_pin : string;
 attribute syn_black_box of stub : architecture is true;
-attribute black_box_pad_pin of stub : architecture is "rst,wr_clk,rd_clk,din[255:0],wr_en,rd_en,dout[255:0],full,empty,valid,rd_data_count[9:0],wr_data_count[9:0],wr_rst_busy,rd_rst_busy";
+attribute black_box_pad_pin of stub : architecture is "rst,wr_clk,rd_clk,din[255:0],wr_en,rd_en,dout[255:0],full,empty,valid,rd_data_count[9:0],wr_data_count[9:0],prog_empty,wr_rst_busy,rd_rst_busy";
 attribute x_core_info : string;
 attribute x_core_info of stub : architecture is "fifo_generator_v13_2_5,Vivado 2020.2";
 begin

@@ -85,6 +85,9 @@ module OctoPulse(
     wire sys_clk_i;
     wire clk_200MHz;
     wire [29 :0]  app_addr;
+	wire [54 :0]  buffer_new_cmd_byte_addr_wr;
+	wire [54 :0]  buffer_new_cmd_byte_addr_rd;	
+	wire [54 :0]  Subtraction_addr_wr_addr_rd;
     wire [2  :0]  app_cmd;
     wire          app_en;
     wire          app_rdy;
@@ -109,6 +112,7 @@ module OctoPulse(
 
     wire [31:0]  ep00wire;
 
+    wire         prog_empty;
     wire         pipe_in_read/* synthesis keep */;
     wire [255:0] pipe_in_data/* synthesis keep */;
     wire [6:0]   pipe_in_rd_count/* synthesis keep */;
@@ -249,52 +253,68 @@ wire debug_read/* synthesis keep */;
 
 
     // OK MIG DDR3 Testbench Instatiation
-    ddr3_test ddr3_tb (
-        .clk                (clk),
-        .reset              (ep00wire[2] | rst),
-        .reads_en           (1'b1), // fix for simulation
-        .writes_en          (1'b1), // fix for simulation
-        .calib_done         (init_calib_complete),
+    drive_interface_ddr3_ctrl drive_interface_ddr3_ctrl_inst (
+    
+        .clk                (clk),//.clk 
+        .reset              (ep00wire[2] | rst),//.reset // dont touch here for simulation
+//        .reads_en           (1'b1), // fix for simulation
+//        .writes_en          (1'b1), // fix for simulation
+        .calib_done         (init_calib_complete),//.calib_done
 
-        .ib_re              (pipe_in_read),
-        .ib_data            (pipe_in_data),
-        .ib_count           (pipe_in_rd_count),
-        .ib_valid           (pipe_in_valid),
-        .ib_empty           (pipe_in_empty),
+        .pipe_in_read        (pipe_in_read),//.pipe_in_read 
+        .pipe_in_data        (pipe_in_data),//.pipe_in_data
+        .pipe_in_rd_count    (pipe_in_rd_count),//.pipe_in_rd_count
+        .pipe_in_valid       (pipe_in_valid),//.pipe_in_valid  
+        .pipe_in_empty       (pipe_in_empty),//.pipe_in_empty
 
-        .ob_we              (pipe_out_write),
-        .ob_data            (pipe_out_data),
-        .ob_count           (pipe_out_wr_count),
-        .ob_full            (pipe_out_full),
+        .pipe_out_write      (pipe_out_write),//.pipe_out_write
+        .pipe_out_data       (pipe_out_data),//.pipe_out_data 
+        .pipe_out_wr_count   (pipe_out_wr_count),//.pipe_out_wr_count
+        .pipe_out_full       (pipe_out_full),//.pipe_out_full
 
-        .app_rdy            (app_rdy),
-        .app_en             (app_en),
-        .app_cmd            (app_cmd),
-        .app_addr           (app_addr),
+        .app_rdy            (app_rdy),//.app_rdy 
+        .app_en             (app_en),//.app_en
+        .app_cmd            (app_cmd),//.app_cmd
+        .app_addr           (app_addr),//.app_addr
 
-        .app_rd_data        (app_rd_data),
-        .app_rd_data_end    (app_rd_data_end),
-        .app_rd_data_valid  (app_rd_data_valid),
+        .app_rd_data        (app_rd_data),//.app_rd_data
+        .app_rd_data_end    (app_rd_data_end),//.app_rd_data_end
+        .app_rd_data_valid  (app_rd_data_valid),//.app_rd_data_valid 
 
-        .app_wdf_rdy        (app_wdf_rdy),
-        .app_wdf_wren       (app_wdf_wren),
-        .app_wdf_data       (app_wdf_data),
-        .app_wdf_end        (app_wdf_end),
-        .app_wdf_mask       (app_wdf_mask),
+        .app_wdf_rdy        (app_wdf_rdy),//.app_wdf_rdy
+        .app_wdf_wren       (app_wdf_wren),//.app_wdf_wren
+        .app_wdf_data       (app_wdf_data),//.app_wdf_data 
+        .app_wdf_end        (app_wdf_end),//.app_wdf_end
+        .app_wdf_mask       (app_wdf_mask),//.app_wdf_mask
+		
+		.prog_empty			(prog_empty),//.prog_empty	
         
-        
-        .debug_write(debug_write),
-        .debug_read(debug_read), 
-        
-        .o_rd_byte_index(o_rd_byte_index),//29'd256),//
-        .o_wr_byte_index(o_wr_byte_index),//29'd256),//
-        .data_number(data_number)
+        .load_ep_wire		(),//.load_ep_wire
+		
+		.buffer_new_cmd_byte_addr_wr	(buffer_new_cmd_byte_addr_wr),
+		.buffer_new_cmd_byte_addr_rd	(buffer_new_cmd_byte_addr_rd)
         
         
     );
 
+    ddr_stamp ddr_stamp_inst (
+  		//	global
+				
+		.clk			(clk),
+		.reset		(ep00wire[2]),		
+				
+		//	input	
+		
+		.buffer_new_cmd_byte_addr_wr		(buffer_new_cmd_byte_addr_wr),
+		.buffer_new_cmd_byte_addr_rd		(buffer_new_cmd_byte_addr_rd),
+		
+		//	output
 
+		.Subtraction_addr_wr_addr_rd		(Subtraction_addr_wr_addr_rd)  
+    );
 
+	assign data_number = Subtraction_addr_wr_addr_rd [54 : 23];
+	
     //Block Throttle
     always @(posedge okClk) begin
         // Check for enough space in output FIFO to pipe out another block
@@ -591,6 +611,7 @@ assign BigVector = {//32 bit bloc
         .valid(pipe_in_valid),
         .rd_data_count(pipe_in_rd_count), // Bus [6 : 0]
         .wr_data_count(pipe_in_wr_count),
+        .prog_empty(prog_empty),
         .wr_rst_busy(wr_rst_busy),
         .rd_rst_busy(rd_rst_busy)); // Bus [9 : 0]
     //(* DONT_TOUCH = "TRUE" *) because one input of LUT2 is not connected

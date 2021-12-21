@@ -66,6 +66,7 @@ COMPONENT fifo_w32_1024_r256_128
     valid : OUT STD_LOGIC;
     rd_data_count : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
     wr_data_count : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
+    prog_empty : OUT STD_LOGIC;
     wr_rst_busy : OUT STD_LOGIC;
     rd_rst_busy : OUT STD_LOGIC
   );
@@ -90,6 +91,7 @@ your_instance_name : fifo_w32_1024_r256_128
     valid => valid,
     rd_data_count => rd_data_count,
     wr_data_count => wr_data_count,
+    prog_empty => prog_empty,
     wr_rst_busy => wr_rst_busy,
     rd_rst_busy => rd_rst_busy
   );
