@@ -47,26 +47,6 @@ module OctoPulse(
     inout  wire [3 :0]  ddr3_dqs_p,
     inout  wire [3 :0]  ddr3_dqs_n,
     output wire         ddr3_reset_n
-
-	//input	wire		okClk,	
-    //input  wire        	sys_rst              // for simulation
-	
-	//ADC PART
-// ADCLTC2311 SPI Signals                          // ADC NOT CONNECTED FOR THE MOMENT (GENERATOR IMPLEMENTED)
-//    output  wire [7 :0]  o_ADC_SCK,              // ADC NOT CONNECTED FOR THE MOMENT (GENERATOR IMPLEMENTED)
-//    output  wire [7 :0]  o_ADC_CNV_n,            // ADC NOT CONNECTED FOR THE MOMENT (GENERATOR IMPLEMENTED)
-//    input wire   [3 :0]  i_Front_ADC_SDO,        // ADC NOT CONNECTED FOR THE MOMENT (GENERATOR IMPLEMENTED)
-//    input wire   [3 :0]  i_Back_ADC_SDO,         // ADC NOT CONNECTED FOR THE MOMENT (GENERATOR IMPLEMENTED)
-	
-    //output wire o_ADC_Conv_n_test/* synthesis keep */, 
-//	output wire o_ADC_Sck_test/* synthesis keep */ //pin W7
-	//output wire o_ADC_SDO_test /* synthesis keep */,
-	
-//	input wire [15:0]  i_Data_in          ,//: in STD_LOGIC_VECTOR (15 downto 0);
-//    input wire [15:0]  i_Address          ,//: in STD_LOGIC_VECTOR (15 downto 0);
-//    input wire i_Write          ,//: in STD_LOGIC;    
-//    input wire i_trig_start     ,//: in std_logic;
-//    input wire [15:0] i_phase          //: in std_logic_vector(15 downto 0);
 	
 );
 
