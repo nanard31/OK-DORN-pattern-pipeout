@@ -57,7 +57,7 @@ module OctoPulse(
 
     // Capability bitfield, used to indicate features supported by this bitfile:
     // [0] - Supports passing calibration status through FrontPanel
-    localparam CAPABILITY = 16'h0001;
+    //localparam CAPABILITY = 16'h0001;
 
     wire init_calib_complete;
     wire [63 :0]  chipscope_wire;
@@ -139,7 +139,7 @@ module OctoPulse(
         end
     endfunction
 
-    assign led = xem7310_led({1'h1,start_led,ep00wire[3],counter_led[24],ep00wire[0],ep00wire[1],app_wdf_rdy,init_calib_complete});
+    assign led = xem7310_led({1'h1,1'b0,ep00wire[3],counter_led[24],ep00wire[0],ep00wire[1],app_wdf_rdy,init_calib_complete});
     //assign led = xem7310_led({1'h0,pipe_in_wr_count});
     
 
@@ -300,7 +300,7 @@ wire debug_read/* synthesis keep */;
 
 
     // Instantiate the okHost and connect endpoints.
-    wire [65*11-1:0]  okEHx;
+    wire [65*6-1:0]  okEHx;
 
     okHost okHI(
         .okUH(okUH),
@@ -321,11 +321,11 @@ wire debug_read/* synthesis keep */;
     wire [15:0] Delay_value/* synthesis keep */;  
     wire [31:0] Time_period/* synthesis keep */;  
     wire o_ADC_Generator_mode/* synthesis keep */;
-    wire [15:0] TrigIn40;
+    //wire [15:0] TrigIn40;
     wire TrigIn41;
     reg start_led;
     
-    always@(posedge clk or posedge rst_Fifo_in)
+/*     always@(posedge clk or posedge rst_Fifo_in)
     begin
         //if(ep00wire[2] == 1'b1)
         if(rst_Fifo_in == 1'b1)
@@ -337,30 +337,30 @@ wire debug_read/* synthesis keep */;
                 start_led <= ~ start_led;
              end
         end
-    end
+    end */
     
-    okWireOR # (.N(9)) wireOR (okEH, okEHx);
-    okWireIn       wi00 (.okHE(okHE), .ep_addr(8'h00), .ep_dataout(ep00wire));
-    okWireIn       wi01 (.okHE(okHE), .ep_addr(8'h01), .ep_dataout(Time_period));
+    okWireOR # (.N(6)) wireOR (okEH, okEHx);
+    okWireIn       wi00 (.okHE(okHE), .ep_addr(8'h00), .ep_dataout(ep00wire));						//ep00wire, reset, start
+    okWireIn       wi01 (.okHE(okHE), .ep_addr(8'h01), .ep_dataout(Time_period));					//set data rate
     
     //okWireIn       address_RAM_generator_wire  (.okHE(okHE), .ep_addr(8'h10), .ep_dataout(Address_generator));
     //okWireIn       Data_RAM_generator_wire  (.okHE(okHE),  .ep_addr(8'h11), .ep_dataout(Data_generator));
     //okWireIn       Delay_value_wire (.okHE(okHE),  .ep_addr(8'h12), .ep_dataout(Delay_value));
     
     okWireOut      wo00 (.okHE(okHE), .okEH(okEHx[ 0*65 +: 65 ]), .ep_addr(8'h20), .ep_datain({31'h00, init_calib_complete}));
-    okWireOut      wo01 (.okHE(okHE), .okEH(okEHx[ 1*65 +: 65 ]), .ep_addr(8'h3e), .ep_datain(CAPABILITY));
-    okWireOut      wo02 (.okHE(okHE), .okEH(okEHx[ 2*65 +: 65 ]), .ep_addr(8'h30), .ep_datain({25'h000_0000,pipe_in_wr_count}));
-    okWireOut      wo03 (.okHE(okHE), .okEH(okEHx[ 4*65 +: 65 ]), .ep_addr(8'h31), .ep_datain({16'h0000,pipe_out_rd_count}));
+    //okWireOut      wo01 (.okHE(okHE), .okEH(okEHx[ 1*65 +: 65 ]), .ep_addr(8'h3e), .ep_datain(CAPABILITY));
+    okWireOut      wo02 (.okHE(okHE), .okEH(okEHx[ 1*65 +: 65 ]), .ep_addr(8'h30), .ep_datain({25'h000_0000,pipe_in_wr_count}));
+    okWireOut      wo03 (.okHE(okHE), .okEH(okEHx[ 2*65 +: 65 ]), .ep_addr(8'h31), .ep_datain({16'h0000,pipe_out_rd_count}));
     //okWireOut      wo04 (.okHE(okHE), .okEH(okEHx[ 5*65 +: 65 ]), .ep_addr(8'h32), .ep_datain({2'd0,o_rd_byte_index}));
-    okWireOut      wo04 (.okHE(okHE), .okEH(okEHx[ 5*65 +: 65 ]), .ep_addr(8'h32), .ep_datain({data_number}));
-    okWireOut      wo05 (.okHE(okHE), .okEH(okEHx[ 6*65 +: 65 ]), .ep_addr(8'h33), .ep_datain({31'd0,o_ADC_Generator_mode}));
-    okWireOut      wo06 (.okHE(okHE), .okEH(okEHx[ 7*65 +: 65 ]), .ep_addr(8'h34), .ep_datain(32'd0));//.ep_datain({2'd0,o_wr_byte_index}));
-    okWireOut      wo07 (.okHE(okHE), .okEH(okEHx[ 8*65 +: 65 ]), .ep_addr(8'h35), .ep_datain(32'd0));//.ep_datain({2'd0,o_rd_byte_index}));
+    okWireOut      wo04 (.okHE(okHE), .okEH(okEHx[ 3*65 +: 65 ]), .ep_addr(8'h32), .ep_datain({data_number}));
+    okWireOut      wo05 (.okHE(okHE), .okEH(okEHx[ 4*65 +: 65 ]), .ep_addr(8'h33), .ep_datain({31'd0,o_ADC_Generator_mode}));
+    //okWireOut      wo06 (.okHE(okHE), .okEH(okEHx[ 7*65 +: 65 ]), .ep_addr(8'h34), .ep_datain(32'd0));//.ep_datain({2'd0,o_wr_byte_index}));
+    //okWireOut      wo07 (.okHE(okHE), .okEH(okEHx[ 8*65 +: 65 ]), .ep_addr(8'h35), .ep_datain(32'd0));//.ep_datain({2'd0,o_rd_byte_index}));
     
-    okTriggerIn      trig0 (.okHE(okHE), .ep_addr(8'h40),.ep_clk(Clk_100MHz),  .ep_trigger(TrigIn40));//.ep_datain({2'd0,o_rd_byte_index}));
+    //okTriggerIn      trig0 (.okHE(okHE), .ep_addr(8'h40),.ep_clk(Clk_100MHz),  .ep_trigger(TrigIn40));//.ep_datain({2'd0,o_rd_byte_index}));
     //okTriggerIn      trig1 (.okHE(okHE), .ep_addr(8'h41),.ep_clk(Clk_100MHz),  .ep_trigger(TrigIn41));//.ep_datain({2'd0,o_rd_byte_index}));
 
-    okPipeOut    po0  (.okHE(okHE), .okEH(okEHx[ 3*65 +: 65 ]), .ep_addr(8'ha0), .ep_read(po0_ep_read), .ep_datain(po0_ep_datain));
+    okPipeOut    po0  (.okHE(okHE), .okEH(okEHx[ 5*65 +: 65 ]), .ep_addr(8'ha0), .ep_read(po0_ep_read), .ep_datain(po0_ep_datain));
 
     wire o_EP_Division_Done,o_EP_ADC_Dout_RDY/* synthesis keep */;
 	wire [31:0] o_EP_Capture_Filter_A /* synthesis keep */;//: out std_logic_vector(31 downto 0);

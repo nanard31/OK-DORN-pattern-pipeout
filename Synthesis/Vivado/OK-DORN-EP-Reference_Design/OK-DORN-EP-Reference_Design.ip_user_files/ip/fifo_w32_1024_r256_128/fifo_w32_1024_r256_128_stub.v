@@ -1,10 +1,10 @@
 // Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2020.2 (win64) Build 3064766 Wed Nov 18 09:12:45 MST 2020
-// Date        : Wed Dec 15 13:25:04 2021
+// Date        : Mon Feb 21 22:28:28 2022
 // Host        : DESKTOP-BSP8Q2B running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode synth_stub
-//               c:/OK-DORN-pattern-pipeout/Synthesis/Vivado/OK-DORN-EP-Reference_Design/OK-DORN-EP-Reference_Design.gen/sources_1/ip/fifo_w32_1024_r256_128/fifo_w32_1024_r256_128_stub.v
+// Command     : write_verilog -force -mode synth_stub -rename_top fifo_w32_1024_r256_128 -prefix
+//               fifo_w32_1024_r256_128_ fifo_w32_1024_r256_128_stub.v
 // Design      : fifo_w32_1024_r256_128
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7a75tfgg484-1
