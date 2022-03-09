@@ -1,4 +1,4 @@
-// (c) Copyright 1995-2021 Xilinx, Inc. All rights reserved.
+// (c) Copyright 1995-2022 Xilinx, Inc. All rights reserved.
 // 
 // This file contains confidential and proprietary information
 // of Xilinx, Inc. and is protected under U.S. and
@@ -90,8 +90,8 @@ output wire full;
 (* X_INTERFACE_INFO = "xilinx.com:interface:fifo_read:1.0 FIFO_READ EMPTY" *)
 output wire empty;
 output wire valid;
-output wire [13 : 0] rd_data_count;
-output wire [10 : 0] wr_data_count;
+output wire [14 : 0] rd_data_count;
+output wire [11 : 0] wr_data_count;
 output wire wr_rst_busy;
 output wire rd_rst_busy;
 
@@ -99,7 +99,7 @@ output wire rd_rst_busy;
     .C_COMMON_CLOCK(0),
     .C_SELECT_XPM(0),
     .C_COUNT_TYPE(0),
-    .C_DATA_COUNT_WIDTH(11),
+    .C_DATA_COUNT_WIDTH(12),
     .C_DEFAULT_VALUE("BlankString"),
     .C_DIN_WIDTH(256),
     .C_DOUT_RST_VAL("0"),
@@ -131,17 +131,17 @@ output wire rd_rst_busy;
     .C_OVERFLOW_LOW(0),
     .C_PRELOAD_LATENCY(1),
     .C_PRELOAD_REGS(0),
-    .C_PRIM_FIFO_TYPE("2kx18"),
+    .C_PRIM_FIFO_TYPE("4kx9"),
     .C_PROG_EMPTY_THRESH_ASSERT_VAL(2),
     .C_PROG_EMPTY_THRESH_NEGATE_VAL(3),
     .C_PROG_EMPTY_TYPE(0),
-    .C_PROG_FULL_THRESH_ASSERT_VAL(2045),
-    .C_PROG_FULL_THRESH_NEGATE_VAL(2044),
+    .C_PROG_FULL_THRESH_ASSERT_VAL(4093),
+    .C_PROG_FULL_THRESH_NEGATE_VAL(4092),
     .C_PROG_FULL_TYPE(0),
-    .C_RD_DATA_COUNT_WIDTH(14),
-    .C_RD_DEPTH(16384),
+    .C_RD_DATA_COUNT_WIDTH(15),
+    .C_RD_DEPTH(32768),
     .C_RD_FREQ(1),
-    .C_RD_PNTR_WIDTH(14),
+    .C_RD_PNTR_WIDTH(15),
     .C_UNDERFLOW_LOW(0),
     .C_USE_DOUT_RST(1),
     .C_USE_ECC(0),
@@ -152,10 +152,10 @@ output wire rd_rst_busy;
     .C_USE_FWFT_DATA_COUNT(0),
     .C_VALID_LOW(0),
     .C_WR_ACK_LOW(0),
-    .C_WR_DATA_COUNT_WIDTH(11),
-    .C_WR_DEPTH(2048),
+    .C_WR_DATA_COUNT_WIDTH(12),
+    .C_WR_DEPTH(4096),
     .C_WR_FREQ(1),
-    .C_WR_PNTR_WIDTH(11),
+    .C_WR_PNTR_WIDTH(12),
     .C_WR_RESPONSE_LATENCY(1),
     .C_MSGON_VAL(1),
     .C_ENABLE_RST_SYNC(1),
@@ -311,12 +311,12 @@ output wire rd_rst_busy;
     .din(din),
     .wr_en(wr_en),
     .rd_en(rd_en),
-    .prog_empty_thresh(14'B0),
-    .prog_empty_thresh_assert(14'B0),
-    .prog_empty_thresh_negate(14'B0),
-    .prog_full_thresh(11'B0),
-    .prog_full_thresh_assert(11'B0),
-    .prog_full_thresh_negate(11'B0),
+    .prog_empty_thresh(15'B0),
+    .prog_empty_thresh_assert(15'B0),
+    .prog_empty_thresh_negate(15'B0),
+    .prog_full_thresh(12'B0),
+    .prog_full_thresh_assert(12'B0),
+    .prog_full_thresh_negate(12'B0),
     .int_clk(1'D0),
     .injectdbiterr(1'D0),
     .injectsbiterr(1'D0),

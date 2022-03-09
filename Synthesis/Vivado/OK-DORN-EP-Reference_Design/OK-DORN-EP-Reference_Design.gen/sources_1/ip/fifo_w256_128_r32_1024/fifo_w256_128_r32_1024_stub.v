@@ -1,7 +1,7 @@
 // Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2020.2 (win64) Build 3064766 Wed Nov 18 09:12:45 MST 2020
-// Date        : Tue Dec 21 16:59:51 2021
+// Date        : Mon Feb 21 22:28:40 2022
 // Host        : DESKTOP-BSP8Q2B running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode synth_stub -rename_top fifo_w256_128_r32_1024 -prefix
 //               fifo_w256_128_r32_1024_ fifo_w256_128_r32_1024_stub.v
@@ -16,7 +16,7 @@
 (* x_core_info = "fifo_generator_v13_2_5,Vivado 2020.2" *)
 module fifo_w256_128_r32_1024(rst, wr_clk, rd_clk, din, wr_en, rd_en, dout, full, 
   empty, valid, rd_data_count, wr_data_count, wr_rst_busy, rd_rst_busy)
-/* synthesis syn_black_box black_box_pad_pin="rst,wr_clk,rd_clk,din[255:0],wr_en,rd_en,dout[31:0],full,empty,valid,rd_data_count[13:0],wr_data_count[10:0],wr_rst_busy,rd_rst_busy" */;
+/* synthesis syn_black_box black_box_pad_pin="rst,wr_clk,rd_clk,din[255:0],wr_en,rd_en,dout[31:0],full,empty,valid,rd_data_count[14:0],wr_data_count[11:0],wr_rst_busy,rd_rst_busy" */;
   input rst;
   input wr_clk;
   input rd_clk;
@@ -27,8 +27,8 @@ module fifo_w256_128_r32_1024(rst, wr_clk, rd_clk, din, wr_en, rd_en, dout, full
   output full;
   output empty;
   output valid;
-  output [13:0]rd_data_count;
-  output [10:0]wr_data_count;
+  output [14:0]rd_data_count;
+  output [11:0]wr_data_count;
   output wr_rst_busy;
   output rd_rst_busy;
 endmodule

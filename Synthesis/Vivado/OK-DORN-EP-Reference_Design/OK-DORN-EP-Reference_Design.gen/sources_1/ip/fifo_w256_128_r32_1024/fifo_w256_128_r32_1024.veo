@@ -1,4 +1,4 @@
-// (c) Copyright 1995-2021 Xilinx, Inc. All rights reserved.
+// (c) Copyright 1995-2022 Xilinx, Inc. All rights reserved.
 // 
 // This file contains confidential and proprietary information
 // of Xilinx, Inc. and is protected under U.S. and
@@ -65,8 +65,8 @@ fifo_w256_128_r32_1024 your_instance_name (
   .full(full),                    // output wire full
   .empty(empty),                  // output wire empty
   .valid(valid),                  // output wire valid
-  .rd_data_count(rd_data_count),  // output wire [13 : 0] rd_data_count
-  .wr_data_count(wr_data_count),  // output wire [10 : 0] wr_data_count
+  .rd_data_count(rd_data_count),  // output wire [14 : 0] rd_data_count
+  .wr_data_count(wr_data_count),  // output wire [11 : 0] wr_data_count
   .wr_rst_busy(wr_rst_busy),      // output wire wr_rst_busy
   .rd_rst_busy(rd_rst_busy)      // output wire rd_rst_busy
 );

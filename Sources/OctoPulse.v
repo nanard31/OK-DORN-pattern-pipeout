@@ -80,9 +80,9 @@ module OctoPulse(
     localparam CAPABILITY = 16'h0001;
 
     wire init_calib_complete;
-    wire [63 :0]  chipscope_wire;
+ //    wire [63 :0]  chipscope_wire;
     reg           sys_rst;        // comment for simulation
-    wire sys_clk_i;
+  //  wire sys_clk_i;
     wire clk_200MHz;
     wire [29 :0]  app_addr;
 	wire [54 :0]  buffer_new_cmd_byte_addr_wr;
@@ -114,7 +114,7 @@ module OctoPulse(
 
     wire         prog_empty;
     wire         pipe_in_read/* synthesis keep */;
-    wire [255:0] pipe_in_data/* synthesis keep */;
+     wire [255:0] pipe_in_data/* synthesis keep */;
     wire [6:0]   pipe_in_rd_count/* synthesis keep */;
     wire [6:0]   pipe_in_wr_count/* synthesis keep */;
     wire         pipe_in_valid/* synthesis keep */;
@@ -130,29 +130,13 @@ module OctoPulse(
     wire         pipe_out_empty/* synthesis keep */;
     reg          pipe_out_ready/* synthesis keep */;
 
-    // Pipe Fifos
-    wire         pi0_ep_write/* synthesis keep */;
     wire         po0_ep_read/* synthesis keep */;
-    wire [31:0]  pi0_ep_dataout/* synthesis keep */;
     wire [31:0]  po0_ep_datain/* synthesis keep */;
 
-    //clock 100 Mhz macromodule
-    wire locked;
-    wire Clk_100MHz; 
-    wire o_reading_fifo/* synthesis keep */; 
-    wire okClk_sync /* synthesis keep */;
-    //test
-
     reg [15:0] byte_counter/* synthesis keep */;
-    reg [31:0] time_counter/* synthesis keep */;
+//    reg [31:0] time_counter/* synthesis keep */;
     reg [31:0] counter_led/* synthesis keep */;
     
-    //debug
-     wire o_start_division/* synthesis keep */;
-     wire o_Phase_enable/* synthesis keep */;    
-     wire o_div_read/* synthesis keep */;
-     wire o_Trig/* synthesis keep */;  
-
     function [7:0] xem7310_led;
         input [7:0] a;
         integer i;
@@ -163,7 +147,7 @@ module OctoPulse(
         end
     endfunction
 
-    assign led = xem7310_led({1'h1,start_led,ep00wire[3],counter_led[24],ep00wire[0],ep00wire[1],app_wdf_rdy,init_calib_complete});
+    assign led = xem7310_led({1'h1,1'h1,ep00wire[3],counter_led[24],ep00wire[0],ep00wire[1],app_wdf_rdy,init_calib_complete});
     //assign led = xem7310_led({1'h0,pipe_in_wr_count});
     
 
@@ -180,17 +164,6 @@ module OctoPulse(
         end
     end
     
- /* //differencial clock buffer   
- clk_wiz_0 clock_buf(
-  // Clock out ports
-  .clk_200Mhz   	(clk_200MHz),
-  .clk_200Mhz_DDR3  (sys_clk_i),
-  .clk_100Mhz   	(Clk_100MHz),
-  // Clock in ports
-  .clk_in1_p    	(sys_clk_p),
-  .clk_in1_n		(sys_clk_n)
- ); */
- 
  reg [15:0] burst_counter/* synthesis keep */;
  reg Write_ddr3/* synthesis keep */;
  reg Read_ddr3/* synthesis keep */;
@@ -340,7 +313,7 @@ wire debug_read/* synthesis keep */;
 
 
     // Instantiate the okHost and connect endpoints.
-    wire [65*11-1:0]  okEHx;
+    wire [65*6-1:0]  okEHx;
 
     okHost okHI(
         .okUH(okUH),
@@ -352,113 +325,38 @@ wire debug_read/* synthesis keep */;
         .okEH(okEH)
     );
     
-    //wire in RANGE "00" to "1F"
-    //Wire 
-    //
-    //
-    wire [15:0] Address_generator/* synthesis keep */;  
-    wire [15:0] Data_generator/* synthesis keep */;  
-    wire [15:0] Delay_value/* synthesis keep */;  
+
     wire [31:0] Time_period/* synthesis keep */;  
     wire o_ADC_Generator_mode/* synthesis keep */;
-    wire [15:0] TrigIn40;
-    wire TrigIn41;
-    reg start_led;
+
     
-    always@(posedge clk or posedge rst_Fifo_in)
-    begin
-        //if(ep00wire[2] == 1'b1)
-        if(rst_Fifo_in == 1'b1)
-        begin
-                start_led <= 1'b0;
-        end else begin
-             //if(byte_counter< 16'h2710)begin
-             if(TrigIn40[1] == 1'b1)begin
-                start_led <= ~ start_led;
-             end
-        end
-    end
+ 
     
-    okWireOR # (.N(9)) wireOR (okEH, okEHx);
-    okWireIn       wi00 (.okHE(okHE), .ep_addr(8'h00), .ep_dataout(ep00wire));
-    okWireIn       wi01 (.okHE(okHE), .ep_addr(8'h01), .ep_dataout(Time_period));
+    okWireOR # (.N(6)) wireOR (okEH, okEHx);
+    okWireIn       wi00 (.okHE(okHE), .ep_addr(8'h00), .ep_dataout(ep00wire));						//ep00wire, reset, start
+    okWireIn       wi01 (.okHE(okHE), .ep_addr(8'h01), .ep_dataout(Time_period));					//set data rate
     
     //okWireIn       address_RAM_generator_wire  (.okHE(okHE), .ep_addr(8'h10), .ep_dataout(Address_generator));
     //okWireIn       Data_RAM_generator_wire  (.okHE(okHE),  .ep_addr(8'h11), .ep_dataout(Data_generator));
     //okWireIn       Delay_value_wire (.okHE(okHE),  .ep_addr(8'h12), .ep_dataout(Delay_value));
     
     okWireOut      wo00 (.okHE(okHE), .okEH(okEHx[ 0*65 +: 65 ]), .ep_addr(8'h20), .ep_datain({31'h00, init_calib_complete}));
-    okWireOut      wo01 (.okHE(okHE), .okEH(okEHx[ 1*65 +: 65 ]), .ep_addr(8'h3e), .ep_datain(CAPABILITY));
-    okWireOut      wo02 (.okHE(okHE), .okEH(okEHx[ 2*65 +: 65 ]), .ep_addr(8'h30), .ep_datain({25'h000_0000,pipe_in_wr_count}));
-    okWireOut      wo03 (.okHE(okHE), .okEH(okEHx[ 4*65 +: 65 ]), .ep_addr(8'h31), .ep_datain({16'h0000,pipe_out_rd_count}));
+    //okWireOut      wo01 (.okHE(okHE), .okEH(okEHx[ 1*65 +: 65 ]), .ep_addr(8'h3e), .ep_datain(CAPABILITY));
+    okWireOut      wo02 (.okHE(okHE), .okEH(okEHx[ 1*65 +: 65 ]), .ep_addr(8'h30), .ep_datain({25'h000_0000,pipe_in_wr_count}));
+    okWireOut      wo03 (.okHE(okHE), .okEH(okEHx[ 2*65 +: 65 ]), .ep_addr(8'h31), .ep_datain({16'h0000,pipe_out_rd_count}));
     //okWireOut      wo04 (.okHE(okHE), .okEH(okEHx[ 5*65 +: 65 ]), .ep_addr(8'h32), .ep_datain({2'd0,o_rd_byte_index}));
-    okWireOut      wo04 (.okHE(okHE), .okEH(okEHx[ 5*65 +: 65 ]), .ep_addr(8'h32), .ep_datain({data_number}));
-    okWireOut      wo05 (.okHE(okHE), .okEH(okEHx[ 6*65 +: 65 ]), .ep_addr(8'h33), .ep_datain({31'd0,o_ADC_Generator_mode}));
-    okWireOut      wo06 (.okHE(okHE), .okEH(okEHx[ 7*65 +: 65 ]), .ep_addr(8'h34), .ep_datain(32'd0));//.ep_datain({2'd0,o_wr_byte_index}));
-    okWireOut      wo07 (.okHE(okHE), .okEH(okEHx[ 8*65 +: 65 ]), .ep_addr(8'h35), .ep_datain(32'd0));//.ep_datain({2'd0,o_rd_byte_index}));
+    okWireOut      wo04 (.okHE(okHE), .okEH(okEHx[ 3*65 +: 65 ]), .ep_addr(8'h32), .ep_datain({data_number}));
+    okWireOut      wo05 (.okHE(okHE), .okEH(okEHx[ 4*65 +: 65 ]), .ep_addr(8'h33), .ep_datain({31'd0,o_ADC_Generator_mode}));
+    //okWireOut      wo06 (.okHE(okHE), .okEH(okEHx[ 7*65 +: 65 ]), .ep_addr(8'h34), .ep_datain(32'd0));//.ep_datain({2'd0,o_wr_byte_index}));
+    //okWireOut      wo07 (.okHE(okHE), .okEH(okEHx[ 8*65 +: 65 ]), .ep_addr(8'h35), .ep_datain(32'd0));//.ep_datain({2'd0,o_rd_byte_index}));
     
-    okTriggerIn      trig0 (.okHE(okHE), .ep_addr(8'h40),.ep_clk(Clk_100MHz),  .ep_trigger(TrigIn40));//.ep_datain({2'd0,o_rd_byte_index}));
+    //okTriggerIn      trig0 (.okHE(okHE), .ep_addr(8'h40),.ep_clk(Clk_100MHz),  .ep_trigger(TrigIn40));//.ep_datain({2'd0,o_rd_byte_index}));
     //okTriggerIn      trig1 (.okHE(okHE), .ep_addr(8'h41),.ep_clk(Clk_100MHz),  .ep_trigger(TrigIn41));//.ep_datain({2'd0,o_rd_byte_index}));
 
-    okPipeOut    po0  (.okHE(okHE), .okEH(okEHx[ 3*65 +: 65 ]), .ep_addr(8'ha0), .ep_read(po0_ep_read), .ep_datain(po0_ep_datain));
+    okPipeOut    po0  (.okHE(okHE), .okEH(okEHx[ 5*65 +: 65 ]), .ep_addr(8'ha0), .ep_read(po0_ep_read), .ep_datain(po0_ep_datain));
 
-    wire o_EP_Division_Done,o_EP_ADC_Dout_RDY/* synthesis keep */;
-	wire [31:0] o_EP_Capture_Filter_A /* synthesis keep */;//: out std_logic_vector(31 downto 0);
-	wire [31:0] o_EP_Capture_Filter_B /* synthesis keep */;//: out std_logic_vector(31 downto 0);
-	wire [31:0] o_EP_Event_Phi /* synthesis keep */;//: out std_logic_vector(31 downto 0);
-	wire [31:0] o_EP_Event_Filter_A/* synthesis keep */;
-	wire [31:0] o_EP_Event_Filter_B/* synthesis keep */;
-	wire [31:0] o_EP_Event_Energy/* synthesis keep */;
-	wire [15:0] o_EP_Event_Energy_16bits/* synthesis keep */;
-	wire [79:0] o_EP_Capture_Buffered/* synthesis keep */;
-	wire  o_EP_Event_Rdy/* synthesis keep */;
-	wire  o_EP_Event_Rdy_flag/* synthesis keep */;
-	wire [15:0] o_EP_Capture_Raw/* synthesis keep */;
 	wire [255:0] BigVector/* synthesis keep */;
-    reg [7:0]   Cpt_integer         /* synthesis keep */;
-	reg [79:0]  EP_Capture_Data     /* synthesis keep */;
-	
-    reg [15:0]  EP_Capture_Raw      /* synthesis keep */;
-    reg [31:0]  EP_Capture_Filter_A /* synthesis keep */;
-    reg [31:0]  EP_Capture_Filter_B /* synthesis keep */;
-    reg [7 :0]  EP_Event_Time       /* synthesis keep */;
-    reg [31:0]  EP_Event_Filter_A   /* synthesis keep */;
-    reg [31:0]  EP_Event_Filter_B   /* synthesis keep */;
-    reg [31:0]  EP_Event_Phi        /* synthesis keep */;
-    reg [31:0]  EP_Event_Energy     /* synthesis keep */;
-    reg [15:0]  EP_Event_Energy_16bits     /* synthesis keep */;
-	
-	reg [7:0]  Flag_00     /* synthesis keep */;
-	reg [7:0]  Flag_69     /* synthesis keep */;
-	reg [15:0] Flag_0000   /* synthesis keep */  ;
-	reg [15:0] Flag_0096   /* synthesis keep */  ;
-    reg wr_en_fifo_in/* synthesis keep */;
-    reg [15:0] event_number/* synthesis keep */;
-    wire rd_rst_busy/* synthesis keep */;//means the Fifo read is in reset state
-    wire wr_rst_busy/* synthesis keep */;//means the Fifo write is in reset state
 
-	wire rst_Fifo_in/* synthesis keep */;
-	wire o_Trig_out/* synthesis keep */;
-    
-    wire Peak_detected/* synthesis keep */;
-    wire [15:0]Peak_Value/* synthesis keep */;
-    
-    // SPI MANAGEMENT SIGNALS
-    reg   MOSI ;
-    reg   CLK_SPI ;
-    reg   [3:0] SS ;
-
-    reg   [5:0]  Frequency_divider;// 0 to 63 change clock at speed divided by 128 => 100 Mhz/128 = 781 KHz
-    reg   [4:0]  Step_Number ;
-    reg   [3:0]  Data_counter;
-    reg   [7:0] HEADER_data_SPI0;
-    reg   [7:0] recorded_data_WORD_LSB;
-    reg   [7:0] recorded_data_WORD_MSB;
-
-    reg   [15:0] recorded_data_SPI0;
-    reg   [15:0] recorded_data_SPI1;
-    reg   [15:0] recorded_data_SPI2;
-    reg   [15:0] recorded_data_SPI3;
 
 	assign  rst_Fifo_in=ep00wire[2];//wr_rst_busy | ep00wire[2];
 	    //reset is positive or negative??
@@ -482,105 +380,9 @@ wire debug_read/* synthesis keep */;
         end
     end
 
-    reg [7:0] capture_couter/* synthesis keep */;
-    reg counter_flag/* synthesis keep */;
-    reg load_fifo/* synthesis keep */;
-    reg o_read_Fifo_r;
-    wire o_read_Fifo;
-    //process to write into the Fifo that load the DDR3 memory
-    //always@(posedge okClk or posedge ep00wire[2])
-    //always@(posedge Clk_100MHz or posedge rst_Fifo_in)
-/*     always@(posedge okClk or posedge rst_Fifo_in)
-    begin
-        //if(ep00wire[2] == 1'b1)
-        if(rst_Fifo_in == 1'b1)
-        begin
-            //BigVector           <= {256{1'b1}};//256'h0000000000000000000000000000000000000000000000000000000000000000       
-			EP_Capture_Data     <= {80{1'b0}}; 
-			EP_Event_Time       <= {8{1'b0}};    
-			EP_Event_Filter_A   <= {32{1'b0}};
-			EP_Event_Filter_B   <= {32{1'b0}};
-			EP_Event_Phi        <= {32{1'b0}}; 
-			EP_Event_Energy     <= {16{1'b0}};
-			Flag_00             <= {8{1'b0}};
-			Flag_69             <= {8{1'b0}};
-			Flag_0000           <= {16{1'b0}};
-			Flag_0096           <= {16{1'b0}};
-			Cpt_integer         <= {8{1'b0}};
-			wr_en_fifo_in		<= 1'b0;
-	       counter_flag         <=1'b0;
-	       load_fifo            <=1'b0;
-	       capture_couter       <= {8{1'b0}};
-	       time_counter <= 32'h00000000;
-	       event_number<=16'd0;
-	       o_read_Fifo_r <= 1'b0;
-        end else begin
-        
-        if(wr_en_fifo_in == 1'b1 && Cpt_integer == 8'd63)begin
-            load_fifo<= 1'b0; 
-            event_number <= event_number+1'b1;  
-        end else if(o_start_division == 1'b1)begin
-            load_fifo <= 1'b1;
-            //time_counter <= time_counter +1'b1; 
-        end
-        //count when a write is done	
-        if(wr_en_fifo_in == 1'b1)begin
-            if(Cpt_integer == 8'd63)begin
-               Cpt_integer <= {8{1'b0}};
-            end else begin
-               Cpt_integer <= Cpt_integer+1'b1;//{8{1'b0}};
-            end
-        end 
-        o_read_Fifo_r <= o_read_Fifo;	                                                                                          
-		//if(o_EP_ADC_Dout_RDY == 1'b1 && load_fifo == 1'b1 && pipe_in_wr_count < 7'd80)begin	
-		if(o_read_Fifo_r == 1'b1 && load_fifo == 1'b1 && pipe_in_wr_count < 7'd80)begin	
-			       wr_en_fifo_in		<= 1'b1;		                                                                                          
-			       EP_Event_Time       <= 8'hAA ; // to see if we receive data from ADC   
-			       EP_Event_Filter_A   <= o_EP_Event_Filter_A;
-			       EP_Event_Filter_B   <= o_EP_Event_Filter_B;
-			       Flag_00             <= 8'h00;
-			       Flag_69             <= 8'h69;
-			       Flag_0096           <= 16'h9600;
-			        
-	               EP_Capture_Data[79:64]  <= o_EP_Capture_Buffered[79:64];
-			       EP_Capture_Data[63:32]  <= 	o_EP_Capture_Buffered[63:32] ;
-	               EP_Capture_Data[31:0]   <=  o_EP_Capture_Buffered[31:0] ;
-	               EP_Event_Phi            <= o_EP_Event_Phi;
-			       EP_Event_Energy_16bits  <=  o_EP_Event_Energy_16bits; 
-			       EP_Event_Energy  <=  o_EP_Event_Energy; 
 
-		      end else begin 
-                wr_en_fifo_in		<= 1'b0;
-                counter_flag        <= 1'b0;
-				EP_Event_Time       <= {8{1'b0}};    
-				EP_Event_Filter_A   <= {32{1'b0}};
-				EP_Event_Filter_B   <= {32{1'b0}};
-				Flag_00             <= {8{1'b0}};
-				Flag_69             <= {8{1'b0}};
-				Flag_0000           <= {16{1'b0}};
-				Flag_0096           <= {16{1'b0}};
-
-			 end
-        end
-    end
   
 //assign BigVector = {Flag_00,EP_Event_Time,Cpt_integer,Flag_69,EP_Capture_Data,Flag_0000,EP_Event_Filter_A,EP_Event_Filter_B,EP_Event_Phi,Flag_0096,EP_Event_Energy};
-assign BigVector = {//32 bit bloc
-                    EP_Capture_Data[79:64],//RAW Signal
-                    Cpt_integer,
-                    Flag_69,
-                    //32 bit bloc
-                    EP_Capture_Data[63:32],//Capture_Filter_A 
-                    //32 bit bloc
-                    EP_Capture_Data[31:0],//Capture_Filter_B
-                    //32 bit bloc
-                    EP_Event_Energy,
-                    EP_Event_Filter_A,
-                    EP_Event_Filter_B,
-                    EP_Event_Phi,
-                    //32 bit bloc
-                    Flag_0096,
-                    EP_Event_Energy_16bits}; */
 
     //always@(posedge Clk_100MHz or posedge ep00wire[2])
     always@(posedge okClk or posedge ep00wire[2])
