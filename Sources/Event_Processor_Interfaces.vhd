@@ -63,11 +63,13 @@ end Event_Processor_Interfaces;
 
 architecture Behavioral of Event_Processor_Interfaces is
 
-signal dataout_instrument : STD_LOGIC_VECTOR(15 downto 0);
+signal dataout_instrument : STD_LOGIC_VECTOR(31 downto 0);
 
 
-signal simulate_data_instrument : unsigned(15 downto 0);
+signal simulate_data_instrument : unsigned(31 downto 0);
 signal timer_instrument : unsigned(31 downto 0);
+signal cpt				: integer range 0 to 63;
+
 
 begin
 
@@ -82,7 +84,9 @@ begin
  dataout_instrument	<=	(others => '0');
  write_instrument <= '0';
  timer_instrument <=	(others => '0');
-
+ cpt				<= 0;
+ 
+ 
  else
 	 if rising_edge (i_Clk) then
 	 
@@ -101,6 +105,13 @@ begin
 				 dataout_instrument <= std_logic_vector(simulate_data_instrument); 
 				 simulate_data_instrument <= simulate_data_instrument + 1;
 				 
+					if cpt <= 63 then
+					cpt <= cpt +1;
+					else
+					cpt	<= 0;
+					end if;
+				 
+				 
 				 else
 				 
 				 write_instrument <= '0';
@@ -118,14 +129,31 @@ begin
  end if;
  end process;
  
-BigVector(255 downto 160)	<=	(others => '0');
-BigVector(159 downto 128)	<=	x"0000"&dataout_instrument;	
-BigVector(127 downto 96)	<=	(others => '0');
-BigVector(95 downto 64)		<=	(others => '0');
-BigVector(63 downto 32)		<=	(others => '0');
-BigVector(31 downto 16)		<=	(others => '0');
-BigVector(15 downto 0)		<=	dataout_instrument;		 
+-- BigVector(255 downto 160)	<=	(others => '0');
+-- BigVector(159 downto 128)	<=	x"0000"&dataout_instrument;	
+-- BigVector(127 downto 96)	<=	(others => '0');
+-- BigVector(95 downto 64)		<=	(others => '0');
+-- BigVector(63 downto 32)		<=	(others => '0');
+-- BigVector(31 downto 16)		<=	(others => '0');
+-- BigVector(15 downto 0)		<=	dataout_instrument;		 
 
 o_ADC_Generator_mode<='0' when (i_wire = '0') else '1';
+
+BigVector(255 downto 240) <= (others => '0');--	RAW Signal    // 16 bits
+BigVector(239 downto 232) <= std_logic_vector(to_unsigned(cpt,8));-- Cpt_integer, // 8 bits
+BigVector(231 downto 224) <= (x"69");
+BigVector(223 downto 192) <=  dataout_instrument;--//Capture_Filter_A //32 bits
+BigVector(191 downto 160) <=  dataout_instrument;--//Capture_Filter_B //32 bits
+BigVector(159 downto 128) <= (others => '0');
+BigVector(127 downto 96) <= (others => '0');	
+BigVector(95 downto 64) <= 	(others => '0');
+BigVector(63 downto 32) <= 	(others => '0');
+BigVector(31 downto 16) <= x"9600";				
+BigVector(15 downto 0) <= (others => '0');
+
+
+
+
+
 
 end architecture Behavioral;
